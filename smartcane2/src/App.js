@@ -23,47 +23,45 @@ export default function App() {
       const watch = navigator.geolocation.watchPosition((position) => {
         const {latitude, longitude} = position.coords;
         setUserLocation({latitude,longitude});
-      },
-      (error)=>{
+      },(error)=>{
         console.error('error getting location: ',error)
-      }
-    );
+      });
     return watch;
-    }
-    else console.error('Geolocation is not supported by this browser');
+    } else console.error('Geolocation is not supported by this browser');
   }
 
   //mappedin
-  const mapRef = useRef(null);
-  const venue = useVenue(options);
-  const mapView = useMapView(mapRef.current, venue);
+  // const mapRef = useRef(null);
+  // const venue = useVenue(options);
+  // const mapView = useMapView(mapRef.current, venue);
 
-  async function getDirections(end="E7 Main Entrance"){
-    const startLocation = venue.locations.find((location) => location.coords === userLocation);
+  // async function getDirections(end="E7 Main Entrance"){
+  //   const startLocation = venue.locations.find((location) => location.coords === userLocation);
   
-    //Find the location with the name "The Body Shop" to use as an end point.
-    const endLocation = venue.locations.find((location) => location.name === "The Body Shop");
+  //   //Find the location with the name "The Body Shop" to use as an end point.
+  //   const endLocation = venue.locations.find((location) => location.name === "The Body Shop");
   
-    //Get directions between the start and end locations.
-    const directions = startLocation?.directionsTo(endLocation);
+  //   //Get directions between the start and end locations.
+  //   const directions = startLocation?.directionsTo(endLocation);
   
-    console.log(directions.instructions[0]);
-  }
+  //   console.log(directions.instructions[0]);
+  // }
 
   return (
     <div className="App">
-        <p>Welcome to smart cane</p>
-      <div className='App-link'>
+      <p>Welcome to smart cane</p>
+      {falling? <p>falling</p>:
+        <div className='App-link'>
         {/*userLocation ? 
         <div>
         <p>Latitude: {JSON.stringify(userLocation.latitude)}</p>
         <p>Longitude: {JSON.stringify(userLocation.longitude)}</p>
         </div>
         : <p>Getting the location data</p>*/}
-      </div>
-      <div style={{'background-color':'#000000','border':'10px'}}><div  id="app" ref={mapRef} /></div>
-      <button onClick={()=>getDirections()}>get directions</button>
-      
+      </div> }
+      {/*<div style={{'background-color':'#000000','border':'10px'}}><div  id="app" ref={mapRef} /></div>
+      <button onClick={()=>getDirections()}>get directions</button>*/}
+     
     </div>
   );
 }
