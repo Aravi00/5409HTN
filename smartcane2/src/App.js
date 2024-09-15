@@ -1,9 +1,9 @@
 import './App.css';
 import React, { useState, useEffect, useRef } from 'react';
-import { TGetVenueOptions } from "@mappedin/mappedin-js";
-import "@mappedin/mappedin-js/lib/mappedin.css";
-import useMapView from "./useMapView";
-import useVenue from "./useVenue";
+// import { TGetVenueOptions } from "@mappedin/mappedin-js";
+// import "@mappedin/mappedin-js/lib/mappedin.css";
+// import useMapView from "./useMapView";
+// import useVenue from "./useVenue";
 
 const options = { //TODO: talk to Mappedin about this
   key: "mik_Qar1NBX1qFjtljLDI52a60753",
@@ -13,8 +13,11 @@ const options = { //TODO: talk to Mappedin about this
 
 export default function App() {
   const [userLocation, setUserLocation] = useState(null);
+  const [falling, setFalling]=useState(false);
+
   useEffect(() => {
     const watchId = getUserLocation();
+    const intervalId = setInterval(getFalling, 100); 
     return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
@@ -46,22 +49,30 @@ export default function App() {
   
   //   console.log(directions.instructions[0]);
   // }
-
+  const  getFalling = () =>{
+    console.log('Current URL:', window.location.href);
+    const params = new URLSearchParams(window.location.search);
+    const fell = params.get('fell');
+    if (fell !== null) {
+      setFalling(fell === 'true');
+      console.log('Received falling parameter:', fell);
+    }
+  }
   return (
     <div className="App">
       <p>Welcome to smart cane</p>
       {falling? <p>falling</p>:
         <div className='App-link'>
-        {/*userLocation ? 
+        {userLocation ? 
         <div>
         <p>Latitude: {JSON.stringify(userLocation.latitude)}</p>
         <p>Longitude: {JSON.stringify(userLocation.longitude)}</p>
         </div>
-        : <p>Getting the location data</p>*/}
-      </div> }
+        : <p>Getting the location data</p>}
+      </div> 
+      }
       {/*<div style={{'background-color':'#000000','border':'10px'}}><div  id="app" ref={mapRef} /></div>
       <button onClick={()=>getDirections()}>get directions</button>*/}
-     
     </div>
   );
 }
